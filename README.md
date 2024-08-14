@@ -1,6 +1,7 @@
-# Project Title
+# Multi-Contrast MR Image Synthesis via Diffusion Model with MR Physics-based Signal Regularization
 
-One Paragraph of project description goes here
+
+This is a PyTorch implementation.
 
 ## Getting Started
 
