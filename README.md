@@ -7,13 +7,15 @@ Official PyTorch implementation of the paper "Multi-Contrast MR Image Synthesis 
 - Ubuntu 20.04
 - CUDA 12.0
 - PyTorch 2.0.0
+```
+Bash install.sh
+```
+### Training
 
-### Prerequisites
-
-What things you need to install the software and how to install them
+Run the following command.
 
 ```
-Give examples
+bash train.sh
 ```
 
 ### Installing
