@@ -8,7 +8,7 @@ Official PyTorch implementation of the paper "Multi-Contrast MR Image Synthesis 
 - CUDA 12.0
 - PyTorch 2.0.0
 ```
-Bash install.sh
+bash install.sh
 ```
 ### Training
 
