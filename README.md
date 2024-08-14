@@ -1,10 +1,12 @@
 # Multi-Contrast MR Image Synthesis via Diffusion Model with MR Physics-based Signal Regularization
 
 
-Official PyTorch implementation of the paper "Multi-Contrast MR Image Synthesis via Diffusion Model with MR Physics-based Signal Regularization". Code modified from [guided-diffusion](https://github.com/openai/guided-diffusion)
+Official PyTorch implementation of the paper "Multi-Contrast MR Image Synthesis via Diffusion Model with MR Physics-based Signal Regularization". Code modified from [guided-diffusion](https://github.com/openai/guided-diffusion).
 ## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### Setting the environment
+- Ubuntu 20.04
+- CUDA 12.0
+- PyTorch 2.0.0
 
 ### Prerequisites
 
