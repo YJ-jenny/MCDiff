@@ -245,7 +245,7 @@ class TrainLoop:
                     t, losses["loss"].detach()
                 )
             lambda_1 = self.args.lambda_1
-            lambda_2 = self.args.lambda_2  
+            # lambda_2 = self.args.lambda_2  
             lambda_3 = self.args.lambda_3
             
             feature_en = 1/3*(feature+feature2+feature3)
@@ -255,9 +255,10 @@ class TrainLoop:
             feature2 =  F.normalize(feature2,p=2,dim=1)
             feature3 =  F.normalize(feature3,p=2,dim=1)
 
+            #self-content consistemcy loss
             loss_reg = mean_flat((feature_en.clone().detach() - feature1) ** 2 + (feature_en.clone().detach() - feature2) ** 2 + (feature_en.clone().detach() - feature3) ** 2) 
 
-            loss = (losses["loss"] * weights).mean() * lambda_1 + (losses2["loss"] * weights).mean() * lambda_2 + (losses3["loss"] * weights).mean() + loss_reg.mean() * lambda_3
+            loss = (losses["loss"] * weights).mean() * lambda_1 + (losses2["loss"] * weights).mean() * lambda_1 + (losses3["loss"] * weights).mean() * lambda_1 + loss_reg.mean() * lambda_3
             log_loss_dict(
                 self.diffusion, t, {k: v * weights for k, v in losses.items()}
             )
