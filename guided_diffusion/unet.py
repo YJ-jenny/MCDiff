@@ -950,7 +950,7 @@ class UNetModifiedModel(nn.Module):
         t2w_f = t2w_b * 2 - 1
         pd_f  = pd_b  * 2 - 1
         h2_iwt = self.features_accumulation(th.cat((t2w_f,pd_f),dim=1),emb)
-        h2_ll,h2_lh,h2_hl,h2_hh = self.wt_f(h2_iwt) # DWY
+        h2_ll,h2_lh,h2_hl,h2_hh = self.wt_f(h2_iwt) # DWT
         h2 = th.concatenate((h2_ll,h2_lh,h2_hl,h2_hh),dim=1)
         h = self.middle_block(h, emb)
         h2 = self.middle_block2(h2, emb)
