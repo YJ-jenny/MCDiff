@@ -81,6 +81,7 @@ class CustomDataset(torch.utils.data.Dataset):
         data_x2 = np.array(data_x2)
         data_y = np.array(data_y)
         
+        # data preprocessing
         data_x1[data_x1<0]=0  
         data_x2[data_x2<0]=0  
         data_y[data_y<0]=0
