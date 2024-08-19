@@ -911,8 +911,8 @@ class UNetModifiedModel(nn.Module):
         h1_1 = self.input_conv(h1[:,:1])
         h1_2 = self.cond_enc(h1[:,1:])
         
-        h1_1_w_ll, h1_1_w_lh, h1_1_w_hl, h1_1_w_hh = self.wt(h1_1)
-        h1_2_w_ll, h1_2_w_lh, h1_2_w_hl, h1_2_w_hh = self.wt(h1_2)
+        h1_1_w_ll, h1_1_w_lh, h1_1_w_hl, h1_1_w_hh = self.wt(h1_1) # DWT
+        h1_2_w_ll, h1_2_w_lh, h1_2_w_hl, h1_2_w_hh = self.wt(h1_2) # DWT
         
         h = th.concatenate((h1_1_w_ll, h1_2_w_ll, h1_1_w_lh, h1_2_w_lh, h1_1_w_hl,h1_2_w_hl, h1_1_w_hh,h1_2_w_hh),dim=1)
         for module in self.input_blocks:
@@ -923,7 +923,7 @@ class UNetModifiedModel(nn.Module):
         features = h.clone()
 
         ch_d = int(h.shape[1]//4)
-        h_iwt = self.iwt_f(h[:,:ch_d],h[:,ch_d:ch_d*2],h[:,ch_d*2:ch_d*3],h[:,ch_d*3:ch_d*4])
+        h_iwt = self.iwt_f(h[:,:ch_d],h[:,ch_d:ch_d*2],h[:,ch_d*2:ch_d*3],h[:,ch_d*3:ch_d*4]) # IWT
         hs_tp = self.features_extraction(h_iwt, emb)
         hs_tp = self.relu(hs_tp)
         
@@ -943,13 +943,14 @@ class UNetModifiedModel(nn.Module):
         t2_te = t2_te.unsqueeze(-1).unsqueeze(-1)
         pd_te = pd_te.unsqueeze(-1).unsqueeze(-1)
         
+        #spin echo equation
         t2w_b = f_s0.clone()*(1-th.exp(-(t2_tr/3000.0)/((1e-5+f_t1.clone()))))*th.exp(-(t2_te/2000.0)/((1e-5+f_t2.clone())))
         pd_b  = f_s0.clone()*(1-th.exp(-(pd_tr/3000.0)/((1e-5+f_t1.clone()))))*th.exp(-(pd_te/2000.0)/((1e-5+f_t2.clone())))
    
         t2w_f = t2w_b * 2 - 1
         pd_f  = pd_b  * 2 - 1
         h2_iwt = self.features_accumulation(th.cat((t2w_f,pd_f),dim=1),emb)
-        h2_ll,h2_lh,h2_hl,h2_hh = self.wt_f(h2_iwt)
+        h2_ll,h2_lh,h2_hl,h2_hh = self.wt_f(h2_iwt) # DWY
         h2 = th.concatenate((h2_ll,h2_lh,h2_hl,h2_hh),dim=1)
         h = self.middle_block(h, emb)
         h2 = self.middle_block2(h2, emb)
@@ -968,8 +969,8 @@ class UNetModifiedModel(nn.Module):
         outA = self.out(h)
         outB = self.out2(h2)
         
-        outA_f = self.iwt(outA[:,:1],outA[:,1:2],outA[:,2:3],outA[:,3:4])
-        outB_f = self.iwt_c(outB[:,:2],outB[:,2:4],outB[:,4:6],outB[:,6:8])
+        outA_f = self.iwt(outA[:,:1],outA[:,1:2],outA[:,2:3],outA[:,3:4]) #IWT
+        outB_f = self.iwt_c(outB[:,:2],outB[:,2:4],outB[:,4:6],outB[:,6:8]) #IWT
         out = th.concatenate((outA_f,outB_f),dim=1)
 
         if wt:
